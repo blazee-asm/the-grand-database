@@ -20,6 +20,7 @@
                 .then(response => response.text())
                 .then(text => {
                     data = JSON.parse(text);
+                    console.log("Data loaded. " + data)
                     enterBtn.disabled = false; // enable button once data is loaded
                 })
                 .catch(err => console.error(err));
