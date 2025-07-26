@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+
+        </style>
+        <title>the grand database :)</title>
+    </head>
+    <body>
+        <input type="text" id="inp">dotpath here</input>
+        <script>
+            let data;
+            fetch('database.json')
+                .then(response => response.text())     // get raw string contents
+                .then(text => {
+                    console.log("Raw JSON string:", text)
+                    data = JSON.parse(text)         // parse JSON string to object
+                    console.log("Parsed object:", data)
+                })
+                .catch(err => console.error(err))
+        </script>
+    </body>
+</html>
