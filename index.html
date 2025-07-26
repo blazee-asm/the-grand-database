@@ -2,49 +2,65 @@
 <html>
     <head>
         <style>
-
         </style>
         <title>the grand database</title>
     </head>
     <body>
         <input type="text" id="inp" placeholder="dotpath here (e.g. root)" /><br>
-        <button id="enter" onclick="get_from_database()">Enter</button>
+        <button id="enter" onclick="get_from_database()" disabled>Enter</button>
         <p id="selected">Nothing.</p>
         <script>
             let data;
 
-            const enterBtn = document.getElementById("enter")
-            const inputBar = document.getElementById("inp")
-            const output = document.getElementById("selected")
+            const enterBtn = document.getElementById("enter");
+            const inputBar = document.getElementById("inp");
+            const output = document.getElementById("selected");
 
             fetch('database.json')
-            .then(response => response.text())
-            .then(text => {
-                data = JSON.parse(text)
-            })
-            .catch(err => console.error(err))
+                .then(response => response.text())
+                .then(text => {
+                    data = JSON.parse(text);
+                    enterBtn.disabled = false; // enable button once data is loaded
+                })
+                .catch(err => console.error(err));
+
+            function getDotpath(obj, path) {
+                return path.split('.').reduce((acc, key) => {
+                    if (acc && key in acc) return acc[key];
+                    else return undefined;
+                }, obj);
+            }
 
             function get_from_database() {
-                let dotpath = inputBar.value
-                let currentlyAtDatabase = eval(`data.${dotpath}`)
-                let humanified;
-                if (currentlyAtDatabase === null) {
-                    humanified = "Invalid dotpath."
+                if (!data) {
+                    output.innerText = "Data not loaded yet.";
+                    return;
+                }
+                let dotpath = inputBar.value.trim();
+                if (!dotpath) {
+                    output.innerText = "Please enter a dotpath.";
+                    return;
+                }
+
+                let currentlyAtDatabase = getDotpath(data, dotpath);
+                let humanified = "";
+
+                if (currentlyAtDatabase === undefined || currentlyAtDatabase === null) {
+                    humanified = "Invalid dotpath.";
                 } else if (typeof currentlyAtDatabase === "object") {
                     if (Array.isArray(currentlyAtDatabase)) {
-                        humanified = currentlyAtDatabase.join(",<br>")
+                        humanified = currentlyAtDatabase.join(",\n");
                     } else {
-                        let paths = Object.keys(currentlyAtDatabase)
-                        let humanified = ""
-                        for (let i = 0; i < paths.length; i++) {
-                            humanified += `${i}. ${paths[i]}`
+                        let keys = Object.keys(currentlyAtDatabase);
+                        for (let i = 0; i < keys.length; i++) {
+                            humanified += `${i}. ${keys[i]}\n`;
                         }
                     }
                 } else {
-                    humanified = currentlyAtDatabase
+                    humanified = currentlyAtDatabase;
                 }
 
-                output.innerText = humanified
+                output.innerText = humanified;
             }
         </script>
     </body>
