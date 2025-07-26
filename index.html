@@ -7,17 +7,42 @@
         <title>the grand database :)</title>
     </head>
     <body>
-        <input type="text" id="inp">dotpath here</input>
+        <input type="text" id="inp" placeholder="dotpath here (e.g. root)" /><br>
+        <button id="enter" onclick="get_from_database()">Enter</button>
+        <p id="selected">Nothing.</p>
         <script>
             let data;
+
+            const enterBtn = document.getElementById("enter")
+            const inputBar = document.getElementById("inp")
+
             fetch('database.json')
-                .then(response => response.text())     // get raw string contents
-                .then(text => {
-                    console.log("Raw JSON string:", text)
-                    data = JSON.parse(text)         // parse JSON string to object
-                    console.log("Parsed object:", data)
-                })
-                .catch(err => console.error(err))
+            .then(response => response.text())
+            .then(text => {
+                data = JSON.parse(text)
+            })
+            .catch(err => console.error(err))
+
+            function get_from_database() {
+                let dotpath = inputBar.value
+                let currentlyAtDatabase = eval(`data.${dotpath}`)
+                let humanified;
+                if (currentlyAtDatabase === null) {
+                    humanified = "Invalid dotpath."
+                } else if (typeof currentlyAtDatabase === "object") {
+                    if (Array.isArray(currentlyAtDatabase)) {
+                        humanified = currentlyAtDatabase.join(",<br>")
+                    } else {
+                        let paths = Object.keys(currentlyAtDatabase)
+                        let humanified = ""
+                        for (let i = 0; i < paths.length; i++) {
+                            humanified += `${i}. ${paths[i]}`
+                        }
+                    }
+                } else {
+                    humanified = currentlyAtDatabase
+                }
+            }
         </script>
     </body>
 </html>

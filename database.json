@@ -1,4 +1,19 @@
-[
-    "hello",
-    "goodbye"
-]
+{
+    "root": {
+        "waldo": {
+            "location": "Waldo is everywhere, but also nowhere."
+        },
+        "tone_indicators": [
+            "/j, meaning \"haha I'm joking\"",
+            "/s, meaning \"I'm being sarcastic. :/\"",
+            "/srs, meaning \"I'm actually being serious, brotha.\"",
+            "/hj, meaning [HTTP 403 Forbidden]",
+            "/t, meaning teasing",
+            "/lt, meaning light-hearted",
+            "/nm, meaning \"Nah, not mad.\"",
+            "/ref, meaning a reference to something",
+            "We're probably also missing a ton"
+        ],
+        "politics": "HTTP 429 Over-maintanenced"
+    }
+}
