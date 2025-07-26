@@ -4,7 +4,7 @@
         <style>
 
         </style>
-        <title>the grand database :)</title>
+        <title>the grand database</title>
     </head>
     <body>
         <input type="text" id="inp" placeholder="dotpath here (e.g. root)" /><br>
@@ -15,6 +15,7 @@
 
             const enterBtn = document.getElementById("enter")
             const inputBar = document.getElementById("inp")
+            const output = document.getElementById("selected")
 
             fetch('database.json')
             .then(response => response.text())
@@ -42,6 +43,8 @@
                 } else {
                     humanified = currentlyAtDatabase
                 }
+
+                output.innerText = humanified
             }
         </script>
     </body>
